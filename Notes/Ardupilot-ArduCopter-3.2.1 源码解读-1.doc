@@ -1,0 +1,221 @@
+<html xmlns:v="urn:schemas-microsoft-com:vml"
+xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=gb2312">
+<META NAME="ROBOTS" CONTENT="NOINDEX,NOFOLLOW">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 11">
+<meta name=Originator content="Microsoft Word 11">
+<title>Ardupilot-ArduCopter-3.2.1 源码解读</title>
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:Author>南京廖华</o:Author>
+  <o:LastAuthor>南京廖华</o:LastAuthor>
+  <o:Revision>6</o:Revision>
+  <o:TotalTime>59</o:TotalTime>
+  <o:Created>2017/4/1 19:57:47</o:Created>
+  <o:LastSaved>2017/4/1 19:57:47</o:LastSaved>
+  <o:Pages>1</o:Pages>
+  <o:Words>101</o:Words>
+  <o:Characters>576</o:Characters>
+  <o:Company>南京廖华</o:Company>
+  <o:Lines>4</o:Lines>
+  <o:Paragraphs>1</o:Paragraphs>
+  <o:CharactersWithSpaces>676</o:CharactersWithSpaces>
+  <o:Version>11.9999</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:View>Print</w:View>
+  <w:PunctuationKerning/>
+  <w:DrawingGridVerticalSpacing>7.8 磅</w:DrawingGridVerticalSpacing>
+  <w:DisplayHorizontalDrawingGridEvery>0</w:DisplayHorizontalDrawingGridEvery>
+  <w:DisplayVerticalDrawingGridEvery>2</w:DisplayVerticalDrawingGridEvery>
+  <w:ValidateAgainstSchemas/>
+  <w:SaveIfXMLInvalid>false</w:SaveIfXMLInvalid>
+  <w:IgnoreMixedContent>false</w:IgnoreMixedContent>
+  <w:AlwaysShowPlaceholderText>false</w:AlwaysShowPlaceholderText>
+  <w:Compatibility>
+   <w:SpaceForUL/>
+   <w:BalanceSingleByteDoubleByteWidth/>
+   <w:DoNotLeaveBackslashAlone/>
+   <w:ULTrailSpace/>
+   <w:DoNotExpandShiftReturn/>
+   <w:AdjustLineHeightInTable/>
+   <w:BreakWrappedTables/>
+   <w:SnapToGridInCell/>
+   <w:WrapTextWithPunct/>
+   <w:UseAsianBreakRules/>
+   <w:DontGrowAutofit/>
+   <w:UseFELayout/>
+  </w:Compatibility>
+  <w:BrowserLevel>MicrosoftInternetExplorer4</w:BrowserLevel>
+ </w:WordDocument>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:LatentStyles DefLockedState="false" LatentStyleCount="156">
+ </w:LatentStyles>
+</xml><![endif]-->
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:宋体;
+	panose-1:2 1 6 0 3 1 1 1 1 1;
+	mso-font-alt:SimSun;
+	mso-font-charset:134;
+	mso-generic-font-family:auto;
+	mso-font-pitch:variable;
+	mso-font-signature:3 135135232 16 0 262145 0;}
+@font-face
+	{font-family:"\@宋体";
+	panose-1:2 1 6 0 3 1 1 1 1 1;
+	mso-font-charset:134;
+	mso-generic-font-family:auto;
+	mso-font-pitch:variable;
+	mso-font-signature:3 135135232 16 0 262145 0;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	text-align:justify;
+	text-justify:inter-ideograph;
+	mso-pagination:none;
+	font-size:16.0pt;
+	mso-bidi-font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:宋体;
+	mso-font-kerning:1.0pt;}
+h1
+	{mso-style-next:正文;
+	margin-top:17.0pt;
+	margin-right:0cm;
+	margin-bottom:16.5pt;
+	margin-left:0cm;
+	text-align:justify;
+	text-justify:inter-ideograph;
+	line-height:240%;
+	mso-pagination:lines-together;
+	page-break-after:avoid;
+	mso-outline-level:1;
+	font-size:22.0pt;
+	font-family:"Times New Roman";
+	mso-font-kerning:22.0pt;
+	font-weight:bold;}
+p.MsoHeader, li.MsoHeader, div.MsoHeader
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	text-align:center;
+	mso-pagination:none;
+	tab-stops:center 207.65pt right 415.3pt;
+	layout-grid-mode:char;
+	border:none;
+	mso-border-bottom-alt:solid windowtext .75pt;
+	padding:0cm;
+	mso-padding-alt:0cm 0cm 1.0pt 0cm;
+	font-size:9.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:宋体;
+	mso-font-kerning:1.0pt;}
+p.MsoFooter, li.MsoFooter, div.MsoFooter
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	mso-pagination:none;
+	tab-stops:center 207.65pt right 415.3pt;
+	layout-grid-mode:char;
+	font-size:9.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:宋体;
+	mso-font-kerning:1.0pt;}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;
+	text-underline:single;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;
+	text-underline:single;}
+p
+	{mso-margin-top-alt:auto;
+	margin-right:0cm;
+	mso-margin-bottom-alt:auto;
+	margin-left:0cm;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:宋体;
+	mso-bidi-font-family:宋体;}
+ /* Page Definitions */
+ @page
+	{mso-page-border-surround-header:no;
+	mso-page-border-surround-footer:no;
+@page Section1
+	{size:595.3pt 841.9pt;
+	margin:72.0pt 89.85pt 72.0pt 89.85pt;
+	mso-header-margin:42.55pt;
+	mso-footer-margin:42.55pt;
+	mso-paper-source:0;
+	layout-grid:15.6pt;}
+div.Section1
+	{page:Section1;}
+-->
+</style>
+<!--[if gte mso 10]>
+<style>
+ /* Style Definitions */
+ table.MsoNormalTable
+	{mso-style-name:普通表格;
+	mso-tstyle-rowband-size:0;
+	mso-tstyle-colband-size:0;
+	mso-style-noshow:yes;
+	mso-style-parent:"";
+	mso-padding-alt:0cm 5.4pt 0cm 5.4pt;
+	mso-para-margin:0cm;
+	mso-para-margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";
+	mso-ansi-language:#0400;
+	mso-fareast-language:#0400;
+	mso-bidi-language:#0400;}
+</style>
+<![endif]--><!--[if gte mso 9]><xml>
+ <o:shapelayout v:ext="edit">
+  <o:idmap v:ext="edit" data="1"/>
+ </o:shapelayout></xml><![endif]-->
+</head>
+
+<body lang=ZH-CN link=blue vlink=purple style='tab-interval:21.0pt;text-justify-trim:punctuation'>
+
+<div class=Section1 style='layout-grid:15.6pt'>
+
+<p class=MsoNormal><b style='mso-bidi-font-weight:normal'><span style='font-size:12.0pt;font-family:宋体;mso-ascii-font-family:"Times New Roman";mso-hansi-font-family:"Times New Roman";color:#993300'>《Ardupilot-ArduCopter-3.2.1 源码解读》来自南京廖华</span></b><b
+style='mso-bidi-font-weight:normal'><span lang=EN-US style='font-size:12.0pt;color:#993300'><o:p></o:p></span></b></p>
+
+<p class=MsoNormal align=left style='text-align:left;line-height:150%;margin-top:3.6pt;'><span lang=EN-US style='font-size:9.0pt;line-height:150%'><a href="http://www.njliaohua.com/lhs_01t03602s03903402x03003303801901t03602s03901v03303403802t03601901f01a01e01a01d00wlu8npdr8jrnf_0.html"><span lang=EN-US style='font-family:宋体;mso-ascii-font-family:"Times New Roman";mso-hansi-font-family:"Times New Roman";text-decoration:none;text-underline:none'><span lang=EN-US>点这里，有很多篇《Ardupilot-ArduCopter-3.2.1 源码解读》</span></span></a><o:p></o:p></span></p>
+
+<p class=MsoNormal align=left style='text-align:left'><span style='font-size:12.0pt;font-family:宋体;mso-ascii-font-family:"Times New Roman";mso-hansi-font-family:"Times New Roman";color:#993300'>在线阅读本文：</span><span lang=EN-US style='font-size:12.0pt;color:#999999'><a href="http://www.njliaohua.com/lhd_0i62j5n9ka83uyx977b0_1.html"><span
+style='text-decoration:none;text-underline:none'>http://www.njliaohua.com/lhd_0i62j5n9ka83uyx977b0_1.html</span></a><o:p></o:p></span></p>
+
+<p class=MsoNormal align=center style='margin-top:15.6pt;margin-right:0cm;margin-bottom:23.4pt;margin-left:0cm;mso-para-margin-top:1.0gd;mso-para-margin-right:
+0cm;mso-para-margin-bottom:1.5gd;mso-para-margin-left:0cm;text-align:center'><b style='mso-bidi-font-weight:normal'><span style='font-size:22.0pt;font-family:
+宋体'>Ardupilot-ArduCopter-3.2.1 源码解读<span lang=EN-US><o:p></o:p></span></span></b></p>
+
+<div style='margin-top:2.5pt;margin-bottom:2.5pt'>
+
+<div style='margin-top:7.8pt;margin-right:0cm;margin-bottom:12.45pt;margin-left:0cm;mso-para-margin-top:.5gd;mso-para-margin-right:0cm;mso-para-margin-bottom:.5gd;mso-para-margin-left:0cm;text-align:justify;text-justify:inter-ideograph;text-indent:32.0pt;mso-char-indent-count:2.0;line-height:22.0pt;mso-line-height-rule:exactly;mso-pagination:none;font-size:16.0pt;mso-bidi-font-family:"Times New Roman";mso-font-kerning:1.0pt'>                                                <p>ArduCopter-3.2.1 源码解读</p>                                                                <p> </p>                                                                <p>本文针对多轴飞行器最简单常见的stabilize_run模式（即自稳模式）的代码进行解读。</p>                                                                <p>首先，在进行代码解读之前，首先我们要先想好，一个飞行器要工作在stabilize_run模式，需要什么输入，最后输出了什么东西。很容易地，我们知道在stabilize_run模式下，飞行器要周期性地检测陀螺仪信号来更新计算目前的角度，检测加速度计和电子罗盘来修正分别修正pitch、roll和Yaw；同时要检测遥控器的输入，转化为相应的油门值、pitch目标值、roll目标值、Yaw转动速度目标值。然后把上面的输入进行PID运算，最后输出各个电机的PWM值。</p>                                                                <p>因此，我们需要从ArduCopter-3.2.1源码中找到下面的程序：</p>                                                                <p>a. 程序是如何周期性运行的；</p>                                                                <p>b. 程序在哪里更新各个传感器的值（加速度计、陀螺仪、电子罗盘）； c. 飞行器姿态解算；</p>                                                                <p>d. 遥控器的输入是在哪些程序检测，并转换成pitch、roll、yaw目标值的； e. PID的计算；</p>                                                                <p>f. 电机PWM值输出；</p>                                                                <p>下面，我们根据上面的思路找到相应的程序并进行解读。</p>                                                                <p> </p>                                                                <p>程序的周期性运行</p>                                                                <p>首先，我们先了解程序是如何周期性运行的。在ArduPilot官网的“Scheduling Code to Run Intermittently (Code Overview)”做出了介绍 （网址：http://dev.ardupilot.com/wiki/apmcopter-code-overview/code-overview-scheduling-your-new-code-to-run-intermittently/）。要让程序周期性运行，有两种办法，一种是在 AP_Scheduler::Task scheduler_tasks[] PROGMEM列表里面添加函数，并定义多少时间运行一次以及设置超时，另一种是在fast_loop()函数里面新增代码。</p>                                                                <p>scheduler_tasks[]可以在ArduCopter.cpp里找到：</p>                                                                                                                        <p> </p>                                                                <p>从里面我们可以看到，scheduler_tasks的程序，最快执行周期是2.5ms（硬件对应pixhawk）。并且里面的程序包括rc_loop和throttle_loop，这两个程序就是从遥控器接收油门、yaw、pitch、roll控制量的程序（不过我没细看这两个程序，也没想明白为什么没把throttle当做遥控器的一部分，高那么复杂）。其中rc_loop的执行周期是4*2.5=10ms。</p>                                                                <p> </p>                                                                <p>另外一个周期性函数，就是fast_loop()了。在ArduCopter.cpp我们可以找到它，它的执行时间是2.5ms。</p>                                                                                                                                                                                                <p> </p>                                                                                                                        <p> </p>                                                                <p>更新传感器和更新姿态</p>                                                                <p>程序周期性运行的问题解决了，接下来我们找程序在哪里更新各个传感器的值，在哪里更新姿态、进行PID运算以及输出pwm。其实在程序fast_loop()里面，就找到了。read_AHRS()就是更新传感器并更新姿态的函数；attitude_control.rate_controller_run()是进行角速度PID运算的函数；motors_output()是输出电机PWM值的函数。下面分别对这些函数作一一分解并进行分析。</p>                                                                <p>read_AHRS()里面调用的是ahrs.update()，ahrs是类AP_AHRS_DCM的一个实例，因此我们在AP_AHRS_DCM.cpp找到了AP_AHRS_DCM::update(void)的定义：</p>                                                                                                                                                                                                <p> </p>                                                                                                                        <p> </p>                                                                <p>AP_AHRS_DCM::update(void)里面，使用_ins.update()来更新陀螺仪加速度计。在这个函数里面，调用_backends[i]-&gt;update();这里才是更新陀螺仪加速度计动作的函数。但是很多人在这里就无法进一步往下看了，因为AP_InertialSensor_Backend的update()是没有进一步定义的。我们去找_backends的定义：AP_InertialSensor_Backend *_backends[INS_MAX_BACKENDS];可以看到_backends[]是个指针数组，我们找到这些指针指向哪些变量，就可以找到该变量对应的类里面的update()函数了（这个不得不表达一下对ArduCopter源码的怨恨，太多的嵌套，太多的子类，找个函数像找迷宫一样。我无法想象结构这么不清晰的程序是怎么维护的）。通过搜索_backends，在AP_InertialSensor.cpp找到了void AP_InertialSensor:: _add_backend(AP_InertialSensor_Backend *(detect)(AP_InertialSensor &amp;))函数的定义，再找到了AP_InertialSensor::_detect_backends(void)函数里进行了_add_backend(AP_InertialSensor_PX4::detect);的操作。因此_backends指向的是AP_InertialSensor_PX4，最后，我们在AP_InertialSensor_PX4.cpp里面找到了bool AP_InertialSensor_PX4::update(void)的定义：（使用_publish_accel等函数更新传感器的值）</p>                                                                                                                                                                                                <p> </p>                                                                        </div>
+
+<p style='margin-top:7.8pt;margin-right:0cm;margin-bottom:12.45pt;margin-left:0cm;mso-para-margin-top:.5gd;mso-para-margin-right:0cm;mso-para-margin-bottom:.8gd;mso-para-margin-left:0cm;text-align:justify;text-justify:inter-ideograph;text-indent:32.0pt;mso-char-indent-count:2.0;line-height:24.0pt;mso-line-height-rule:exactly;mso-pagination:none'><span lang=EN-US style='font-size:16.0pt;mso-bidi-font-family:"Times New Roman";mso-font-kerning:1.0pt'><o:p>&nbsp;</o:p></span></p>
+
+<p class=MsoFooter align=center style='text-align:center'><span
+style='font-family:宋体;mso-ascii-font-family:"Times New Roman";mso-hansi-font-family:"Times New Roman";color:#993300'>南京廖华</span><span lang=EN-US><a
+href="http://www.njliaohua.com/">http://www.njliaohua.com/</a></span></p>
+
+<p class=MsoFooter align=center style='text-align:center'><span
+style='font-family:宋体;mso-ascii-font-family:"Times New Roman";mso-hansi-font-family:"Times New Roman";color:#993300'>免费文档下载</span><span lang=EN-US style='font-size:16.0pt;mso-bidi-font-size:10.0pt;color:#993300'><o:p></o:p></span></p>
+
+</div></div>
+</body></html>
